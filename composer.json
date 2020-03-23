@@ -1,0 +1,27 @@
+{
+  "name": "sitchi/simple-admin",
+  "description": "Phalcon 4 - Simple Admin",
+  "keywords": [
+    "phalcon",
+    "SimpleAdmin"
+  ],
+  "homepage": "https://viphost.ge",
+  "support": {
+    "issues": "https://github.com/sitchi/simple-admin/issues",
+    "source": "https://github.com/sitchi/simple-admin"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nikoloz Sitchinava",
+      "email": "nikoloz.sitchinava@gmail.com",
+      "homepage": "https://viphost.ge"
+    }
+  ],
+  "require": {
+    "php": ">=7.3",
+    "ext-phalcon": "^4.0.5",
+    "phalcon/migrations": "^2.0",
+    "swiftmailer/swiftmailer": "^6.2"
+  }
+}
