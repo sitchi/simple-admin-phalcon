@@ -1,6 +1,6 @@
 {
   "name": "sitchi/simple-admin",
-  "description": "Phalcon 4 - Simple Admin",
+  "description": "Simple Admin for the Phalcon PHP Framework",
   "keywords": [
     "phalcon",
     "SimpleAdmin"
