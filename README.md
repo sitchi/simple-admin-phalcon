@@ -15,7 +15,7 @@ Simple Admin for the Phalcon PHP Framework
 ##### Install via composer create-project
 
 ```bash
-composer create-project sitchi/simple-admin:dev-master
+composer create-project sitchi/simple-admin
 ```
 
 ##### Install via git clone
