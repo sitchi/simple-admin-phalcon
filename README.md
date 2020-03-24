@@ -1,6 +1,9 @@
 # simple-admin
 Simple Admin for the Phalcon PHP Framework
 
+![github-small](https://viphost.ge/sa4.png)
+![github-small](https://viphost.ge/sa3.png)
+
 ## Get Started
 
 ### Requirements
@@ -30,7 +33,7 @@ After the installation
 
 1. Edit `app/config/config.php` file with your DB connection information
 2. Run DB migrations `vendor/bin/phalcon-migrations run`
-3. Write permissions of the cache/ directory `sudo chmod -R 0777 cache/`
+3. Write permissions of the cache, logs directory `sudo chmod -R 0777 cache/ logs/`
 
 ## License
 
