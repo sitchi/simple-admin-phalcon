@@ -12,11 +12,12 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-4">
+                {{ form.render('csrf', ['value': security.getToken()]) }}
 
-        <div class="col-4">
-            {{ form.render('csrf', ['value': security.getToken()]) }}
-
-            {{ form.render('Send') }}
+                {{ form.render('Send') }}
+            </div>
         </div>
         <!-- /.col -->
         </form>
