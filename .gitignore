@@ -8,5 +8,6 @@
 composer.lock
 config.dev.php
 cache/
+logs/
 vendor/
 .phalcon/
