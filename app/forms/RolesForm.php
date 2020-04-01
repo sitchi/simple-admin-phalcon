@@ -46,4 +46,9 @@ class RolesForm extends Form
         $csrf->clear();
         $this->add($csrf);
     }
+
+    public function getCsrf()
+    {
+        return $this->security->getToken();
+    }
 }
