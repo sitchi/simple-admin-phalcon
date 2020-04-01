@@ -122,7 +122,7 @@ class UsersController extends ControllerBase
         $this->view->breadcrumbs = "
         <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
         <li class='breadcrumb-item'><a href='/users'><i class='fas fa-user-secret'></i> Users</a></li>
-        <li class='breadcrumb-item active'><i class='fas fa-plus-circle'></i> შექმნა</li>
+        <li class='breadcrumb-item active'><i class='fas fa-plus-circle'></i> Create</li>
         ";
         $this->view->form = $form;
     }
