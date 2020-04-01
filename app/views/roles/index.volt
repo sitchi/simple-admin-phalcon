@@ -28,7 +28,7 @@
                                     {{ link_to("/roles/edit/" ~ role.id, '<i class="fas fa-edit"></i>', "class": "btn btn-primary btn-sm") }}
                                     {{ link_to("/roles/editPermission/" ~ role.id, '<i class="fas fa-lock"></i>', "class": "btn btn-warning btn-sm") }}
                                     <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete"
-                                       onclick="delete({{ role.id }})"><i class="fas fa-trash-alt"></i></a>
+                                       onclick="deleteRole({{ role.id }})"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -41,3 +41,20 @@
     </div>
     <!-- /.col-12 -->
 </div>
+
+{% if acl.isAllowed(auth.getRole(), 'roles', 'delete') != null %}
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="modal-delete"></div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
