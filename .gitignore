@@ -11,3 +11,4 @@ cache/
 logs/
 vendor/
 .phalcon/
+.idea/
