@@ -105,10 +105,6 @@ class UsersForm extends Form
                     'min' => 8,
                     'messageMinimum' => 'Password is too short. Minimum 8 characters',
                 ]),
-                new Confirmation([
-                    'message' => 'Password doesn\'t match confirmation',
-                    'with' => 'confirmPassword',
-                ]),
             ]);
             $this->add($password);
         } else {
