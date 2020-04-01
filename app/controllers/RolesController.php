@@ -31,7 +31,15 @@ class RolesController extends ControllerBase
         // css and javascript
         $datatable = new \PSA\Helpers\Datatables;
         $this->view->css = $datatable->css();
-        $this->view->js = $datatable->jsData();
+        $js = $datatable->jsData();
+        $js .= "<script type='text/javascript' language='javascript'>
+        function deleteRole(id) {
+            $.post('/roles/delete/' + id, function(data){
+                $('#modal-delete').html(data);
+            })
+        }
+        </script>";
+        $this->view->js = $js;
         // Breadcrumbs
         $this->view->breadcrumbs = "
         <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
@@ -163,23 +171,56 @@ class RolesController extends ControllerBase
      */
     public function deleteAction($id)
     {
-        $role = Roles::findFirstById($id);
-        if (!$role) {
-            $this->flash->error("Role was not found");
+        if ($this->request->getPost('delete')) {
+            $role = Roles::findFirstById($id);
+            if (!$role) {
+                $this->flashSession->error("Role was not found");
+                return $this->response->redirect('/roles');
+            }
+            // check csrf
+            if (!$this->security->checkToken($this->security->getTokenKey(), $this->request->getPost('csrf'))) {
+                $this->flashSession->error('CSRF validation failed');
+                return $this->response->redirect('/roles');
+            }
 
-            return $this->dispatcher->forward([
-                'action' => 'index'
-            ]);
+            if (!$role->delete()) {
+                if ($role->getMessages()) {
+                    foreach ($role->getMessages() as $message) {
+                        $this->flashSession->error((string)$message);
+                    }
+                } else {
+                    $this->flashSession->error("An error has occurred");
+                }
+            } else {
+                $this->acl->rebuild();
+                $this->flashSession->success("Role was deleted");
+            }
+            return $this->response->redirect('/roles');
         }
 
-        if (!$role->delete()) {
-            $this->flash->error($role->getMessages());
-        } else {
-            $this->flash->success("Role was deleted");
+        $this->view->disable();
+        $resData = "Oops! Something went wrong. Please try again later.";
+        //Create a response instance
+        $response = new \Phalcon\Http\Response();
+        $response->setStatusCode(400, "Bad Request");
+
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $form = new \PSA\Forms\RolesForm();
+            $resData = '<form method="post" action="/roles/delete/' . $id . '">';
+            $resData .= '<div class="modal-body">';
+            $resData .= '<label>Are you sure you want to delete the role?!</label>';
+            $resData .= '</div>';
+            $resData .= '<div class="modal-footer">';
+            $resData .= \Phalcon\Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
+            $resData .= $form->render('id');
+            $resData .= $form->render('csrf', ['value' => $form->getCsrf()]);
+            $resData .= '</div>';
+            $resData .= '</form>';
+            $response->setStatusCode(200);
         }
-        $this->acl->rebuild();
-        return $this->dispatcher->forward([
-            'action' => 'index'
-        ]);
+        //Set the content of the response
+        $response->setJsonContent($resData);
+        $response->send();
+        exit;
     }
 }
