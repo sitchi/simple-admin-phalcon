@@ -42,15 +42,15 @@ class Roles extends Model
         $this->keepSnapshots(true);
         $this->addBehavior(new \PSA\Models\Blameable());
 
-        $this->hasMany('id', Users::class, 'roleID', [
-            'alias'      => 'users',
+        $this->hasMany('id', UsersRoles::class, 'roleID', [
+            'alias' => 'usersRoles',
             'foreignKey' => [
-                'message' => 'Profile cannot be deleted because it\'s used on Users',
+                'message' => 'Role cannot be deleted because it\'s used on Users',
             ],
         ]);
 
         $this->hasMany('id', Permissions::class, 'roleID', [
-            'alias'      => 'permissions',
+            'alias' => 'permissions',
             'foreignKey' => [
                 'action' => Relation::ACTION_CASCADE,
             ],
