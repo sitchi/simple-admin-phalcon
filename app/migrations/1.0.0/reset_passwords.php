@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -83,10 +83,10 @@ class ResetPasswordsMigration_100 extends Migration
                     new Index('userID', ['userID'], '')
                 ],
                 'options' => [
-                    'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '1',
-                    'ENGINE' => 'InnoDB',
-                    'TABLE_COLLATION' => 'utf8mb4_general_ci'
+                    'table_type' => 'BASE TABLE',
+                    'auto_increment' => '1',
+                    'engine' => 'InnoDB',
+                    'table_collation' => 'utf8mb4_general_ci'
                 ],
             ]
         );

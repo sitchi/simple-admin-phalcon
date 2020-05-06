@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -64,10 +64,10 @@ class PermissionsMigration_100 extends Migration
                     new Index('profilesId', ['roleID'], '')
                 ],
                 'options' => [
-                    'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '154',
-                    'ENGINE' => 'InnoDB',
-                    'TABLE_COLLATION' => 'utf8mb4_general_ci'
+                    'table_type' => 'BASE TABLE',
+                    'auto_increment' => '25',
+                    'engine' => 'InnoDB',
+                    'table_collation' => 'utf8mb4_general_ci'
                 ],
             ]
         );
@@ -99,19 +99,4 @@ class PermissionsMigration_100 extends Migration
         $this->batchDelete('permissions');
     }
 
-    /**
-     * This method is called after the table was created
-     *
-     * @return void
-     */
-     public function afterCreateTable()
-     {
-        $this->batchInsert('permissions', [
-                'id',
-                'roleID',
-                'resource',
-                'action'
-            ]
-        );
-     }
 }

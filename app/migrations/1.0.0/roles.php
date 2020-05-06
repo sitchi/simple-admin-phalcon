@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -55,10 +55,10 @@ class RolesMigration_100 extends Migration
                     new Index('active', ['active'], '')
                 ],
                 'options' => [
-                    'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '4',
-                    'ENGINE' => 'InnoDB',
-                    'TABLE_COLLATION' => 'utf8mb4_general_ci'
+                    'table_type' => 'BASE TABLE',
+                    'auto_increment' => '4',
+                    'engine' => 'InnoDB',
+                    'table_collation' => 'utf8mb4_general_ci'
                 ],
             ]
         );
@@ -89,18 +89,4 @@ class RolesMigration_100 extends Migration
         $this->batchDelete('roles');
     }
 
-    /**
-     * This method is called after the table was created
-     *
-     * @return void
-     */
-     public function afterCreateTable()
-     {
-        $this->batchInsert('roles', [
-                'id',
-                'name',
-                'active'
-            ]
-        );
-     }
 }
