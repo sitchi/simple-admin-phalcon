@@ -23,13 +23,7 @@ class UsersForm extends Form
      */
     public function initialize($entity = null, array $options = [])
     {
-        // In edition the id is hidden
-        if (!empty($options['edit'])) {
-            $id = new Hidden('id');
-        } else {
-            $id = new Text('id');
-        }
-
+        $id = new Hidden('id');
         $this->add($id);
 
         $name = new Text('name', [
@@ -152,5 +146,10 @@ class UsersForm extends Form
         ]));
         $csrf->clear();
         $this->add($csrf);
+    }
+
+    public function getCsrf()
+    {
+        return $this->security->getToken();
     }
 }
