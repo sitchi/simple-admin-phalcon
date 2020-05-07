@@ -25,7 +25,15 @@ class UsersController extends ControllerBase
         // css and javascript
         $datatable = new \PSA\Helpers\Datatables;
         $this->view->css = $datatable->css();
-        $this->view->js = $datatable->jsData();
+        $js = $datatable->jsData();
+        $js .= "<script type='text/javascript' language='javascript'>
+        function deleteUser(id) {
+            $.post('/users/delete/' + id, function(data){
+                $('#modal-delete').html(data);
+            })
+        }
+        </script>";
+        $this->view->js = $js;
         // Breadcrumbs
         $this->view->breadcrumbs = "
         <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
@@ -229,23 +237,56 @@ class UsersController extends ControllerBase
      */
     public function deleteAction($id)
     {
-        $user = Users::findFirstById($id);
-        if (!$user) {
-            $this->flash->error("User was not found.");
-            return $this->dispatcher->forward([
-                'action' => 'index'
-            ]);
+        if ($this->request->getPost('delete')) {
+            $user = Users::findFirstById($id);
+            if (!$user) {
+                $this->flashSession->error("Role was not found");
+                return $this->response->redirect('/roles');
+            }
+            // check csrf
+            if (!$this->security->checkToken($this->security->getTokenKey(), $this->request->getPost('csrf'))) {
+                $this->flashSession->error('CSRF validation failed');
+                return $this->response->redirect('/roles');
+            }
+
+            if (!$user->delete()) {
+                if ($user->getMessages()) {
+                    foreach ($user->getMessages() as $message) {
+                        $this->flashSession->error((string)$message);
+                    }
+                } else {
+                    $this->flashSession->error("An error has occurred");
+                }
+            } else {
+                $this->flashSession->success("User was deleted");
+            }
+            return $this->response->redirect('/users');
         }
 
-        if (!$user->delete()) {
-            $this->flash->error($user->getMessages());
-        } else {
-            $this->flash->success("Admin was deleted");
-        }
+        $this->view->disable();
+        $resData = "Oops! Something went wrong. Please try again later.";
+        //Create a response instance
+        $response = new \Phalcon\Http\Response();
+        $response->setStatusCode(400, "Bad Request");
 
-        return $this->dispatcher->forward([
-            'action' => 'index'
-        ]);
+        if ($this->request->isPost() && $this->request->isAjax()) {
+            $form = new \PSA\Forms\UsersForm();
+            $resData = '<form method="post" action="/users/delete/' . $id . '">';
+            $resData .= '<div class="modal-body">';
+            $resData .= '<label>Are you sure you want to delete the user?!</label>';
+            $resData .= '</div>';
+            $resData .= '<div class="modal-footer">';
+            $resData .= \Phalcon\Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
+            $resData .= $form->render('id');
+            $resData .= $form->render('csrf', ['value' => $form->getCsrf()]);
+            $resData .= '</div>';
+            $resData .= '</form>';
+            $response->setStatusCode(200);
+        }
+        //Set the content of the response
+        $response->setJsonContent($resData);
+        $response->send();
+        exit;
     }
 
 
