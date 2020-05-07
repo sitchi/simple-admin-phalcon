@@ -1,2 +1,1 @@
-2020-04-02 03:13:56 [error] Column 'roleID' doesn't belong to any of the selected models (1), when preparing: SELECT COUNT(*) AS rowcount FROM [PSA\Models\Users] WHERE [roleID] = ?0
-2020-04-02 03:14:25 [error] Column 'roleID' doesn't belong to any of the selected models (1), when preparing: SELECT COUNT(*) AS rowcount FROM [PSA\Models\Users] WHERE [roleID] = ?0
+
