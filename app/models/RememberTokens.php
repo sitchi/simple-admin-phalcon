@@ -48,7 +48,6 @@ class RememberTokens extends Model
      */
     public function beforeValidationOnCreate()
     {
-        // Timestamp the confirmation
-        $this->createdAt = time();
+        $this->createdAt = date('Y-m-d H:i:s');
     }
 }

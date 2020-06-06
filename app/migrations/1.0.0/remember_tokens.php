@@ -61,10 +61,9 @@ class RememberTokensMigration_100 extends Migration
                     new Column(
                         'createdAt',
                         [
-                            'type' => Column::TYPE_INTEGER,
-                            'unsigned' => true,
-                            'notNull' => true,
-                            'size' => 10,
+                            'type' => Column::TYPE_DATETIME,
+                            'default' => "current_timestamp()",
+                            'notNull' => false,
                             'after' => 'userAgent'
                         ]
                     )

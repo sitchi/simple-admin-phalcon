@@ -47,7 +47,7 @@ class LoginForm extends Form
         // Remember
         $remember = new Check('remember', [
             'value' => 'yes',
-            'id'    => 'login-remember',
+            'id'    => 'remember',
         ]);
         $remember->setLabel('Remember me');
 

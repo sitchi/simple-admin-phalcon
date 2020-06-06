@@ -188,7 +188,7 @@ class Auth extends Injectable
                 ]);
                 if ($remember) {
                     // Check if the cookie has not expired
-                    if (((time() - $remember->createdAt) / (86400 * 8)) < 8) {
+                    if (((time() - strtotime($remember->createdAt)) / (86400 * 8)) < 8) {
                         // Check if the user was flagged
                         $this->checkUserFlags($user);
 
@@ -208,7 +208,7 @@ class Auth extends Injectable
                         // Register the successful login
                         $this->saveSuccessLogin($user);
 
-                        return $this->response->redirect('users');
+                        return $this->response->redirect('dashboard');
                     }
                 }
             }
@@ -217,7 +217,7 @@ class Auth extends Injectable
         $this->cookies->get('RMU')->delete();
         $this->cookies->get('RMT')->delete();
 
-        return $this->response->redirect('session/login');
+        return $this->response->redirect('/');
     }
 
     /**
@@ -374,7 +374,7 @@ class Auth extends Injectable
             ],
         ]);
 
-        return $userToken ? $userToken->userID : null;
+        return ($userToken->userID) ? (int)$userToken->userID : null;
     }
 
     /**

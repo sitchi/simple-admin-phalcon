@@ -12,6 +12,7 @@ use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Url as UrlResolver;
+use Phalcon\Crypt;
 use PSA\Auth\Auth;
 use PSA\Acl\Acl;
 use PSA\Mail\Mail;
@@ -61,7 +62,7 @@ $di->set('dispatcher', function () {
     //Set default namespace to backend module
     $dispatcher->setDefaultNamespace('PSA\Controllers');
     //Bind the EventsManager to the dispatcher
-  //  $dispatcher->setEventsManager($eventsManager);
+    //  $dispatcher->setEventsManager($eventsManager);
     return $dispatcher;
 });
 
@@ -184,6 +185,16 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+
+/**
+ * Crypt service
+ */
+$di->set('crypt', function () {
+    $config = $this->getConfig();
+    $crypt = new Crypt();
+    $crypt->setKey($config->application->cryptSalt);
+    return $crypt;
 });
 
 /**
