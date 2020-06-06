@@ -52,9 +52,8 @@ class UsersAuthsMigration_100 extends Migration
                     new Column(
                         'userAgent',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_TEXT,
                             'notNull' => true,
-                            'size' => 500,
                             'after' => 'ipAddress'
                         ]
                     ),
