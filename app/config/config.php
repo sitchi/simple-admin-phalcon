@@ -18,7 +18,7 @@ return new \Phalcon\Config([
     ],
     'application' => [
         'baseUri' => '/',
-        'publicUrl' => 'viphost.ge',
+        'publicUrl' => 'simple-admin.sitchi.dev',
         'appDir' => APP_PATH . '/',
         'controllersDir' => APP_PATH . '/controllers/',
         'formsDir' => APP_PATH . '/forms/',
@@ -33,9 +33,9 @@ return new \Phalcon\Config([
     ],
     'mail' => [
         'fromName' => 'Simple Admin',
-        'fromEmail' => 'info@viphost.ge',
+        'fromEmail' => 'info@sitchi.dev',
         'smtp' => [
-            'server' => 'smtp.viphost.ge',
+            'server' => 'smtp.sitchi.dev',
             'port' => 465,
             'security' => 'ssl',
             'username' => '',

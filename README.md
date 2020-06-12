@@ -1,8 +1,8 @@
 # simple-admin
 Simple Admin for the Phalcon PHP Framework
 
-![github-small](https://viphost.ge/sa4.png)
-![github-small](https://viphost.ge/sa3.png)
+![github-small](https://sitchi.dev/sa4.png)
+![github-small](https://sitchi.dev/sa3.png)
 
 ## Get Started
 
