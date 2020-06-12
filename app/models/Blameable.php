@@ -89,7 +89,7 @@ class Blameable extends Behavior
                     $auditDetail->setTransaction($transaction);
                     $auditDetail->auditID = $auditID;
                     $auditDetail->fieldName = $field;
-                    $auditDetail->oldValue = $originalData[$field];
+                    $auditDetail->oldValue = !isset($originalData[$field]) ? null : $originalData[$field];
                     $auditDetail->newValue = $model->$field;
                     if (!$auditDetail->save()) {
                         $transaction->rollback();
