@@ -60,7 +60,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/dashboard" class="brand-link">
-             <img src="/img/simple-admin.png" alt="PS" class="brand-image ">
+            <img src="/img/simple-admin.png" alt="PS" class="brand-image">
             <span class="brand-text font-weight-light"> Simple Admin</span>
         </a>
 
@@ -137,9 +137,7 @@
                     </div>
                     <div class="col-sm-8">
                         <ol class="breadcrumb float-sm-right">
-                            {% if breadcrumbs is not empty %}
-                                {{ breadcrumbs }}
-                            {% endif %}
+                            {{ breadcrumbs is not empty ? breadcrumbs : null }}
                         </ol>
                     </div>
                 </div>
