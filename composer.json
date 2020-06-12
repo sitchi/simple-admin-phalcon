@@ -5,7 +5,7 @@
     "phalcon",
     "SimpleAdmin"
   ],
-  "homepage": "https://viphost.ge",
+  "homepage": "https://simple-admin.sitchi.dev",
   "support": {
     "issues": "https://github.com/sitchi/simple-admin/issues",
     "source": "https://github.com/sitchi/simple-admin"
@@ -15,7 +15,7 @@
     {
       "name": "Nikoloz Sitchinava",
       "email": "nikoloz.sitchinava@gmail.com",
-      "homepage": "https://viphost.ge"
+      "homepage": "https://sitchi.dev"
     }
   ],
   "require": {
