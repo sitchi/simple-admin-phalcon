@@ -20,7 +20,7 @@
   ],
   "require": {
     "php": ">=7.3",
-    "ext-phalcon": "^4.0.5",
+    "ext-phalcon": "^4.0.6",
     "phalcon/migrations": "^2.1",
     "swiftmailer/swiftmailer": "^6.2"
   }
