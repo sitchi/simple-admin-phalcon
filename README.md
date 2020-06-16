@@ -10,7 +10,7 @@ Simple Admin for the Phalcon PHP Framework
 
 * PHP >= 7.3
 * [Apache][1] Web Server with [mod_rewrite][2] enabled or [Nginx][3] Web Server
-* Phalcon >= 4.0.5 [Phalcon Framework release][4] extension enabled
+* Phalcon >= 4.0.6 [Phalcon Framework release][4] extension enabled
 * [MariaDB][5] >= 10.3
 
 ### Installation
