@@ -4,6 +4,13 @@ Simple Admin for the Phalcon PHP Framework
 ![github-small](https://sitchi.dev/sa4.png)
 ![github-small](https://sitchi.dev/sa3.png)
 
+### Demo Site
+https://simple-admin.sitchi.dev/
+
+user: demo@sitchi.dev
+
+pass: Demo2020
+
 ## Get Started
 
 ### Requirements
