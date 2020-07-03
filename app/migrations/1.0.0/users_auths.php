@@ -45,7 +45,7 @@ class UsersAuthsMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_CHAR,
                             'notNull' => true,
-                            'size' => 15,
+                            'size' => 45,
                             'after' => 'userID'
                         ]
                     ),
