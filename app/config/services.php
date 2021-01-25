@@ -2,8 +2,12 @@
 declare(strict_types=1);
 
 use Phalcon\Escaper;
+use Phalcon\Events\Manager;
 use Phalcon\Flash\Direct as Flash;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Logger;
+use Phalcon\Logger\Adapter\Stream;
+use Phalcon\Logger\Formatter\Line;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View;
@@ -35,26 +39,23 @@ $di->setShared('config', function () {
  */
 $di->set('dispatcher', function () {
     //Create/Get an EventManager
-    $eventsManager = new \Phalcon\Events\Manager();
-    $eventsManager->attach("dispatch", function ($event, $dispatcher, $exception) {
-        //controller or action doesn't exist
-        $object = $event->getData();
-        if ($event->getType() == 'beforeException') {
-            switch ($exception->getCode()) {
-                case \Phalcon\Dispatcher\Exception::EXCEPTION_HANDLER_NOT_FOUND:
-                case \Phalcon\Dispatcher\Exception::EXCEPTION_ACTION_NOT_FOUND:
-                case \Phalcon\Dispatcher\Exception::EXCEPTION_CYCLIC_ROUTING:
-                    $dispatcher->forward([
-                        'controller' => 'error',
-                        'action' => 'show404'
-                    ]);
-                    return false;
-                default :
-                    $dispatcher->forward([
-                        'controller' => 'error',
-                        'action' => 'show500'
-                    ]);
-            }
+    $eventsManager = new Manager();
+    //controller or action doesn't exist
+    $eventsManager->attach("dispatch:beforeException", function ($event, $dispatcher, $exception) {
+        switch ($exception->getCode()) {
+            case \Phalcon\Dispatcher\Exception::EXCEPTION_HANDLER_NOT_FOUND:
+            case \Phalcon\Dispatcher\Exception::EXCEPTION_ACTION_NOT_FOUND:
+            case \Phalcon\Dispatcher\Exception::EXCEPTION_CYCLIC_ROUTING:
+                $dispatcher->forward([
+                    'controller' => 'error',
+                    'action' => 'show404'
+                ]);
+                return false;
+            default :
+                $dispatcher->forward([
+                    'controller' => 'error',
+                    'action' => 'show500'
+                ]);
         }
     });
 
@@ -259,11 +260,11 @@ $di->set('logger', function ($filename = null, $format = null) {
     $filename = trim($loggerConfigs->get('filename'), '\\/');
     $path = rtrim($loggerConfigs->get('path'), '\\/') . DIRECTORY_SEPARATOR;
 
-    $formatter = new \Phalcon\Logger\Formatter\Line($format, $loggerConfigs->date);
-    $adapter = new \Phalcon\Logger\Adapter\Stream($path . $filename);
+    $formatter = new Line($format, $loggerConfigs->date);
+    $adapter = new Stream($path . $filename);
     $adapter->setFormatter($formatter);
 
-    $logger = new \Phalcon\Logger(
+    $logger = new Logger(
         'messages',
         [
             'main' => $adapter,
