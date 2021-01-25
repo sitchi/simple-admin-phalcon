@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace PSA\Controllers;
 
-use PSA\Controllers\ControllerBase;
-
 /**
  * ErrorController
  */
