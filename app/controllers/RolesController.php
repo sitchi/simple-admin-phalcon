@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PSA\Controllers;
 
 use PSA\Forms\RolesForm;
+use PSA\Helpers\Datatables;
 use PSA\Models\Roles;
 use PSA\Models\Permissions;
 
@@ -29,7 +30,7 @@ class RolesController extends ControllerBase
     public function indexAction()
     {
         // css and javascript
-        $datatable = new \PSA\Helpers\Datatables;
+        $datatable = new Datatables;
         $this->view->css = $datatable->css();
         $js = $datatable->jsData();
         $js .= "<script type='text/javascript' language='javascript'>
