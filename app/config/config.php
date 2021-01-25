@@ -4,10 +4,13 @@
  * Modified: prepend directory path of current file, because of this file own different ENV under between Apache and command line.
  * NOTE: please remove this comment.
  */
+
+use Phalcon\Config;
+
 defined('BASE_PATH') || define('BASE_PATH', getenv('BASE_PATH') ?: realpath(dirname(__FILE__) . '/../..'));
 defined('APP_PATH') || define('APP_PATH', BASE_PATH . '/app');
 
-return new \Phalcon\Config([
+return new Config([
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
@@ -28,7 +31,6 @@ return new \Phalcon\Config([
         'modelsDir' => APP_PATH . '/models/',
         'viewsDir' => APP_PATH . '/views/',
         'cacheDir' => BASE_PATH . '/cache/',
-        'baseUri' => '/',
         'cryptSalt' => 'eEAfR|_&G&f,+vU]:jFr!!A&+71w1Ms9~8_4L!<@[N@DyaIP_2My|:+.u>/6m,$D'
     ],
     'mail' => [
