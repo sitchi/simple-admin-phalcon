@@ -222,7 +222,7 @@ $di->setShared('AclResources', function () {
  */
 $di->set('acl', function () {
     $acl = new Acl();
-    $pr = $this->getShared('AclResources')->privateResources->toArray();
+    $pr = $this->get('AclResources')->privateResources->toArray();
     $acl->addPrivateResources($pr);
     return $acl;
 });
@@ -254,7 +254,7 @@ $di->setShared('gravatar', function () {
  * Logger service
  */
 $di->set('logger', function ($filename = null, $format = null) {
-    $loggerConfigs = $this->getShared('config')->get('logger');
+    $loggerConfigs = $this->getConfig()->get('logger');
 
     $format = $format ?: $loggerConfigs->format;
     $filename = trim($loggerConfigs->get('filename'), '\\/');
