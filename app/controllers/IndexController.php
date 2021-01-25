@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace PSA\Controllers;
 
-use PSA\Controllers\ControllerBase;
 use PSA\Forms\LoginForm;
 use PSA\Forms\SignUpForm;
 use PSA\Forms\ForgotPasswordForm;
 use PSA\Auth\Exception as AuthException;
 use PSA\Models\Users;
 use PSA\Models\ResetPasswords;
+use PSA\Models\UsersRoles;
 
 /**
  * Display the default index page.
@@ -65,7 +65,7 @@ class IndexController extends ControllerBase
      */
     public function signupAction()
     {
-        $form = new \PSA\Forms\SignUpForm();
+        $form = new SignUpForm();
 
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {
@@ -91,7 +91,7 @@ class IndexController extends ControllerBase
                 $userID = $user->id;
 
                 // create role
-                $usersRoles = new \PSA\Models\UsersRoles;
+                $usersRoles = new UsersRoles;
                 if ($userID == 1) {
                     $usersRoles->roleID = 1;
                 } else {
