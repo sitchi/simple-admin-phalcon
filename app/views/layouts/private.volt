@@ -157,9 +157,9 @@
 
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
-            <b>v1.0.1</b>
+            <b>v1.0.2</b>
         </div>
-        <strong>&copy; 2020 - Simple Admin. </strong>
+        <strong>&copy; 2020 - {{ date("Y") }} - Simple Admin. </strong>
     </footer>
 
 </div>
