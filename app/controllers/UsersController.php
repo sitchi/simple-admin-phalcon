@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace PSA\Controllers;
 
+use Phalcon\Http\Response;
+use Phalcon\Tag;
+use PSA\Forms\UsersForm;
+use PSA\Helpers\Datatables;
 use PSA\Models\Users;
+use PSA\Models\UsersRoles;
 
 /**
  * UsersController
@@ -23,7 +28,7 @@ class UsersController extends ControllerBase
     public function indexAction()
     {
         // css and javascript
-        $datatable = new \PSA\Helpers\Datatables;
+        $datatable = new Datatables;
         $this->view->css = $datatable->css();
         $js = $datatable->jsData();
         $js .= "<script type='text/javascript' language='javascript'>
@@ -57,7 +62,7 @@ class UsersController extends ControllerBase
             ]);
         }
         // css and javascript
-        $datatable = new \PSA\Helpers\Datatables;
+        $datatable = new Datatables;
         $this->view->css = $datatable->css();
         $this->view->js = $datatable->jsData();
         // Breadcrumbs
@@ -74,7 +79,7 @@ class UsersController extends ControllerBase
      */
     public function createAction()
     {
-        $form = new \PSA\Forms\UsersForm();
+        $form = new UsersForm();
 
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {
@@ -103,7 +108,7 @@ class UsersController extends ControllerBase
                 // create role
                 $rolesID = $this->request->getPost('rolesID', 'int');
                 foreach ($rolesID as $value) {
-                    $UsersRoles = new \PSA\Models\UsersRoles;
+                    $UsersRoles = new UsersRoles;
                     $UsersRoles->roleID = $value;
                     $UsersRoles->userID = $userID;
                     if (!$UsersRoles->save()) {
@@ -149,7 +154,7 @@ class UsersController extends ControllerBase
             ]);
         }
         $newPassword = $this->request->getPost('newPassword');
-        $form = new \PSA\Forms\UsersForm($user, ['edit' => 1, 'newPassword' => $newPassword]);
+        $form = new UsersForm($user, ['edit' => 1, 'newPassword' => $newPassword]);
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {
                 foreach ($form->getMessages() as $message) {
@@ -164,7 +169,7 @@ class UsersController extends ControllerBase
                 // delete old role
                 $deleteData = array_diff($currentRoles, $rolesID);
                 foreach ($deleteData as $value) {
-                    $UsersRoles = \PSA\Models\UsersRoles::findFirst("roleID = '$value' AND userID='$id'");
+                    $UsersRoles = UsersRoles::findFirst("roleID = '$value' AND userID='$id'");
                     if (!$UsersRoles->delete()) {
                         $this->db->rollback();
                         foreach ($UsersRoles->getMessages() as $message) {
@@ -175,9 +180,9 @@ class UsersController extends ControllerBase
                 }
                 // create role
                 foreach ($rolesID as $value) {
-                    $UsersRoles = \PSA\Models\UsersRoles::findFirst("roleID = '$value' AND userID='$id'");
+                    $UsersRoles = UsersRoles::findFirst("roleID = '$value' AND userID='$id'");
                     if (!$UsersRoles) {
-                        $UsersRoles = new \PSA\Models\UsersRoles;
+                        $UsersRoles = new UsersRoles;
                         $UsersRoles->roleID = $value;
                         $UsersRoles->userID = $id;
                     }
@@ -266,17 +271,17 @@ class UsersController extends ControllerBase
         $this->view->disable();
         $resData = "Oops! Something went wrong. Please try again later.";
         //Create a response instance
-        $response = new \Phalcon\Http\Response();
+        $response = new Response();
         $response->setStatusCode(400, "Bad Request");
 
         if ($this->request->isPost() && $this->request->isAjax()) {
-            $form = new \PSA\Forms\UsersForm();
+            $form = new UsersForm();
             $resData = '<form method="post" action="/users/delete/' . $id . '">';
             $resData .= '<div class="modal-body">';
             $resData .= '<label>Are you sure you want to delete the user?!</label>';
             $resData .= '</div>';
             $resData .= '<div class="modal-footer">';
-            $resData .= \Phalcon\Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
+            $resData .= Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
             $resData .= $form->render('id');
             $resData .= $form->render('csrf', ['value' => $form->getCsrf()]);
             $resData .= '</div>';
