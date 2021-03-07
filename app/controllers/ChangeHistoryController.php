@@ -142,12 +142,11 @@ class ChangeHistoryController extends ControllerBase
             </div>';
             $data[] = $noKey;
         }
-        $resData = array(
+        return [
             "draw" => intval($params['draw']),
             "recordsTotal" => intval($totalRecords),
             "recordsFiltered" => intval($totalRecords),
             "data" => $data
-        );
-        return $resData;
+        ];
     }
 }
