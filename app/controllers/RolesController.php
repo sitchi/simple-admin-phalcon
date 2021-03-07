@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace PSA\Controllers;
 
+use Phalcon\Http\Response;
+use Phalcon\Tag;
 use PSA\Forms\RolesForm;
 use PSA\Helpers\Datatables;
 use PSA\Models\Roles;
@@ -202,17 +204,17 @@ class RolesController extends ControllerBase
         $this->view->disable();
         $resData = "Oops! Something went wrong. Please try again later.";
         //Create a response instance
-        $response = new \Phalcon\Http\Response();
+        $response = new Response();
         $response->setStatusCode(400, "Bad Request");
 
         if ($this->request->isPost() && $this->request->isAjax()) {
-            $form = new \PSA\Forms\RolesForm();
+            $form = new RolesForm();
             $resData = '<form method="post" action="/roles/delete/' . $id . '">';
             $resData .= '<div class="modal-body">';
             $resData .= '<label>Are you sure you want to delete the role?!</label>';
             $resData .= '</div>';
             $resData .= '<div class="modal-footer">';
-            $resData .= \Phalcon\Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
+            $resData .= Tag::submitButton(['name' => 'delete', 'class' => 'btn btn btn-danger btn-sm', 'value' => 'Delete']);
             $resData .= $form->render('id');
             $resData .= $form->render('csrf', ['value' => $form->getCsrf()]);
             $resData .= '</div>';
