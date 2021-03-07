@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PSA\Controllers;
 
+use PSA\Forms\ChangePasswordForm;
 use PSA\Models\EmailConfirmations;
 use PSA\Models\PasswordChanges;
 use PSA\Models\ResetPasswords;
@@ -179,7 +180,7 @@ class UserControlController extends ControllerBase
             ]);
         }
 
-        $form = new \PSA\Forms\ChangePasswordForm();
+        $form = new ChangePasswordForm();
 
         if ($this->request->isPost()) {
             if (!$form->isValid($this->request->getPost())) {
