@@ -14,7 +14,7 @@
 
 {{ content() }}
 
-{{ javascript_include('/js/jquery-3.4.1.min.js', false) }}
+{{ javascript_include('/js/jquery-3.6.0.min.js', false) }}
 {{ javascript_include('/js/bootstrap.bundle.min.js', false) }}
 {{ javascript_include('/js/adminlte.min.js', false) }}
 {{ js is not empty ? js : null }}
