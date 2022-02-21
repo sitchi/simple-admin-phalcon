@@ -1,4 +1,4 @@
-# simple-admin
+# simple-admin-phalcon
 Simple Admin for the Phalcon PHP Framework
 
 ![github-small](https://sitchi.dev/sa4.png)
