@@ -19,9 +19,9 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
-    "ext-phalcon": "^4.0.6",
-    "phalcon/migrations": "^2.1",
-    "swiftmailer/swiftmailer": "^6.2"
+    "php": ">=8.1",
+    "ext-phalcon": "^5.3.1",
+    "phalcon/migrations": "^3.0",
+    "swiftmailer/swiftmailer": "^6.3"
   }
 }

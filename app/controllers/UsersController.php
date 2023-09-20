@@ -19,7 +19,7 @@ class UsersController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
-        $this->tag->setTitle('Users');
+        $this->tag->title()->set('Users');
     }
 
     /**

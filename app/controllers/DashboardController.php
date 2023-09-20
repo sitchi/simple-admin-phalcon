@@ -18,6 +18,6 @@ class DashboardController extends ControllerBase
      */
     public function indexAction()
     {
-        $this->tag->setTitle('Simple Admin');
+        $this->tag->title()->set('Simple Admin');
     }
 }

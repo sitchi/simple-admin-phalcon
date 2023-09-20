@@ -20,7 +20,7 @@
 namespace PSA\Avatar;
 
 use InvalidArgumentException;
-use Phalcon\Config;
+use Phalcon\Config\Config;
 
 /**
  * Phalcon Gravatar.
@@ -150,7 +150,7 @@ class Gravatar implements Avatarable
 
         if (!is_array($config)) {
             throw new InvalidArgumentException(
-                'Config must be either an array or \Phalcon\Config instance'
+                'Config must be either an array or \Phalcon\Config\Config instance'
             );
         }
 

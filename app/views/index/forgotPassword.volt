@@ -6,17 +6,16 @@
         {{ form() }}
         <div class="input-group mb-3">
             {{ form.render('email', ["class":"form-control", 'id': 'forgot-email-input']) }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-user"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="fas fa-user"></span>
             </div>
         </div>
         <div class="row">
             <div class="col-4">
-                {{ form.render('csrf', ['value': security.getToken()]) }}
-
-                {{ form.render('Send') }}
+                <div class="d-grid gap-2">
+                    {{ form.render('csrf', ['value': security.getToken()]) }}
+                    {{ form.render('Send') }}
+                </div>
             </div>
         </div>
         <!-- /.col -->

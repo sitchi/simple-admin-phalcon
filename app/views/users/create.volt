@@ -8,19 +8,19 @@
             </div>
             <div class="card-body">
                 {{ form() }}
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="name">Full Name</label>
                     {{ form.render("name", ["class": "form-control"]) }}
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="email">E-Mail</label>
                     {{ form.render("email", ["class": "form-control"]) }}
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label>Password</label>
                     {{ form.render("password") }}
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="roleID">Roles</label>
                     {{ form.render("rolesID[]", ["class": "form-control select2", "multiple": "multiple", "multiple": "multiple"]) }}
                 </div>

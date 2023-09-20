@@ -33,7 +33,7 @@ class UserControlController extends ControllerBase
                 'action' => 'index',
             ]);
         }
-        $this->tag->setTitle('Profile');
+        $this->tag->title()->set('Profile');
     }
 
     /**
@@ -213,6 +213,6 @@ class UserControlController extends ControllerBase
         ";
         $this->view->form = $form;
 
-        $this->tag->setTitle('Change Password');
+        $this->tag->title()->set('Change Password');
     }
 }

@@ -23,7 +23,7 @@ class IndexController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('public');
-        $this->tag->setTitle('Simple Admin');
+        $this->tag->title()->set('Simple Admin');
         // check auth users
         if ($this->auth->getIdentity()) {
             $this->response->redirect('dashboard');

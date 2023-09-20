@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-use Phalcon\Escaper;
+use Phalcon\Html\Escaper;
 use Phalcon\Events\Manager;
 use Phalcon\Flash\Direct as Flash;
 use Phalcon\Flash\Session as FlashSession;
-use Phalcon\Logger;
-use Phalcon\Logger\Adapter\Stream;
+use Phalcon\Logger\Logger;
 use Phalcon\Logger\Formatter\Line;
+use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\View;
@@ -15,7 +15,7 @@ use Phalcon\Mvc\View\Engine\Php as PhpEngine;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Stream as SessionAdapter;
 use Phalcon\Session\Manager as SessionManager;
-use Phalcon\Url as UrlResolver;
+use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Crypt;
 use PSA\Auth\Auth;
 use PSA\Acl\Acl;

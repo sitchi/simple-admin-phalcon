@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Phalcon\Config;
+use Phalcon\Config\Config;
 
 return new Config([
     'privateResources' => [

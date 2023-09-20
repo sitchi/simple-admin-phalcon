@@ -6,34 +6,26 @@
         {{ form() }}
         <div class="input-group mb-3">
             {{ form.render('name', ["class":"form-control"]) }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-user"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="fas fa-user"></span>
             </div>
         </div>
         <div class="input-group mb-3">
             {{ form.render('email', ["class":"form-control"]) }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
             </div>
         </div>
         <div class="input-group mb-3">
             {{ form.render('password', ["class":"form-control"]) }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="fas fa-lock"></span>
             </div>
         </div>
         <div class="input-group mb-3">
             {{ form.render('confirmPassword', ["class":"form-control"]) }}
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="fas fa-lock"></span>
             </div>
         </div>
         <div class="row">
@@ -45,9 +37,10 @@
             </div>
             <!-- /.col -->
             <div class="col-4">
-                {{ form.render('csrf', ['value': security.getToken()]) }}
-
-                {{ form.render('signUp') }}
+                <div class="d-grid gap-2">
+                    {{ form.render('csrf', ['value': security.getToken()]) }}
+                    {{ form.render('signUp') }}
+                </div>
             </div>
             <!-- /.col -->
         </div>

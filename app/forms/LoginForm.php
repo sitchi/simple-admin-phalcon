@@ -9,9 +9,9 @@ use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Form;
-use Phalcon\Validation\Validator\Email;
-use Phalcon\Validation\Validator\Identical;
-use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Filter\Validation\Validator\Email;
+use Phalcon\Filter\Validation\Validator\Identical;
+use Phalcon\Filter\Validation\Validator\PresenceOf;
 
 class LoginForm extends Form
 {
@@ -48,6 +48,7 @@ class LoginForm extends Form
         $remember = new Check('remember', [
             'value' => 'yes',
             'id'    => 'remember',
+            'class' => 'form-check-input'
         ]);
         $remember->setLabel('Remember me');
 

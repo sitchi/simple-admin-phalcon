@@ -18,7 +18,7 @@ class ChangeHistoryController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
-        $this->tag->setTitle(' Change History');
+        $this->tag->title()->set(' Change History');
     }
 
     /**

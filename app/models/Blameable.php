@@ -50,7 +50,7 @@ class Blameable extends Behavior
             // Get the request service
             $request = $model->getDI()->getRequest();
 
-            $audit->valueID = reset($model);
+            $audit->valueID = array_values(get_object_vars($model))[0];
 
             // Get the user id
             $user = new \PSA\Auth\Auth();
@@ -121,7 +121,7 @@ class Blameable extends Behavior
             // Get the request service
             $request = $model->getDI()->getRequest();
 
-            $audit->valueID = reset($model);
+            $audit->valueID = array_values(get_object_vars($model))[0];
 
             // Get the user id
             $user = new \PSA\Auth\Auth();
@@ -182,7 +182,7 @@ class Blameable extends Behavior
         // Get the request service
         $request = $model->getDI()->getRequest();
 
-        $audit->valueID = reset($model);
+        $audit->valueID = array_values(get_object_vars($model))[0];
 
         // Get the user id
         $user = new \PSA\Auth\Auth();

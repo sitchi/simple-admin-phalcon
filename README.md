@@ -15,9 +15,9 @@ pass: Demo2020
 
 ### Requirements
 
-* PHP >= 7.3
+* PHP >= 8.1
 * [Apache][1] Web Server with [mod_rewrite][2] enabled or [Nginx][3] Web Server
-* Phalcon >= 4.0.6 [Phalcon Framework release][4] extension enabled
+* Phalcon >= 5.3.1 [Phalcon Framework release][4] extension enabled
 * [MariaDB][5] >= 10.3
 
 ### Installation

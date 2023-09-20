@@ -8,15 +8,15 @@
             </div>
             <div class="card-body">
                 {{ form() }}
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="name">Name</label>
                     {{ form.render("name", ["class": "form-control"]) }}
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="active">Active?</label>
                     {{ form.render("active", ["class": "form-control"]) }}
                 </div>
-                <div class="btn-group">
+                <div class="mb-3">
                     {{ submit_button("Save", "class": "btn btn-success", 'value':'Save') }}
                     {{ link_to("/roles", 'Cancel', "class": "btn btn-warning") }}
                 </div>

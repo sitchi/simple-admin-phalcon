@@ -23,7 +23,7 @@ class RolesController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
-        $this->tag->setTitle('Roles');
+        $this->tag->title()->set('Roles');
     }
 
     /**

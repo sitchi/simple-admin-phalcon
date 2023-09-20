@@ -1,85 +1,77 @@
-<body class="sidebar-mini layout-fixed sidebar-close control-sidebar-open">
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary sidebar-open app-loaded">
 <!-- Site wrapper -->
-<div class="wrapper">
+<main class="app-wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
-            </li>
-        </ul>
+    <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"><i class="fa fa-bars"></i></a>
+                </li>
 
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3" action="/users" method="post">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" name="searchAccount" id="search"
-                       placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
+                <!-- SEARCH FORM -->
+                <form class="form-inline ml-3" action="/users" method="post">
+                    <div class="input-group">
+                        <input class="form-control form-control-navbar" type="search" name="searchAccount" id="search"
+                               placeholder="Search" aria-label="Search">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </ul>
 
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-
-            <li class="nav-item dropdown user-menu">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{ gravatar.getAvatar(auth.getEmail()) }}" class="user-image img-circle elevation-2"
-                         alt="img">
-                    <span class="d-none d-md-inline">{{ auth.getName() }}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <!-- User image -->
-                    <li class="user-header bg-primary">
-                        <img src="{{ gravatar.getAvatar(auth.getEmail()) }}" class="img-circle elevation-2" alt="img">
-                        <p>
-                            {{ auth.getName() }}
-                            <small>Roles:
-                                {% for role in auth.getRole() %}
-                                    {{ role ~ ' | ' }}
-                                {% endfor %}
-                            </small>
-                        </p>
-                    </li>
-                    <!-- Menu Footer-->
-                    <li class="user-footer">
-                        <a href="/profile" class="btn btn-default btn-flat">Profile</a>
-                        <a href="/logout" class="btn btn-default btn-flat float-right">Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                        <img src="{{ gravatar.getAvatar(auth.getEmail()) }}" class="user-image rounded-circle shadow"
+                             alt="img">
+                        <span class="d-none d-md-inline">{{ auth.getName() }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" data-bs-popper="static">
+                        <!-- User image -->
+                        <li class="user-header text-bg-primary">
+                            <img src="{{ gravatar.getAvatar(auth.getEmail()) }}" class="rounded-circle shadow"
+                                 alt="img">
+                            <p>
+                                {{ auth.getName() }}
+                                <small>Roles:
+                                    {% for role in auth.getRole() %}
+                                        {{ role ~ ' | ' }}
+                                    {% endfor %}
+                                </small>
+                            </p>
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <a href="/profile" class="btn btn-default btn-flat">Profile</a>
+                            <a href="/logout" class="btn btn-default btn-flat float-end">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </nav>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!-- Brand Logo -->
-        <a href="/dashboard" class="brand-link">
-            <img src="/img/simple-admin.png" alt="PS" class="brand-image">
-            <span class="brand-text font-weight-light"> Simple Admin</span>
-        </a>
+        <div class="sidebar-brand">
+            <a href="/dashboard" class="brand-link">
+                <img src="/img/simple-admin.png" alt="PS" class="brand-image">
+                <span class="brand-text font-weight-light"> Simple Admin</span>
+            </a>
+        </div>
 
         <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="{{ gravatar.getAvatar(auth.getEmail()) }}" class="img-circle elevation-2" alt="img">
-                </div>
-                <div class="info">
-                    <a href="/profile" class="d-block">{{ auth.getName() }}</a>
-                </div>
-            </div>
-
+        <div class="sidebar-wrapper">
             <!-- Sidebar Menu -->
             <nav class="mt-2 text-sm">
-                <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview"
-                    role="menu" data-accordion="false">
+                <ul class="nav sidebar-menu flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
 
                     {% set urlm = dispatcher.getControllerName() ~ "/" ~ dispatcher.getActionName() %}
 
@@ -126,17 +118,17 @@
     </aside>
 
 
-    <div class="content-wrapper">
+    <main class="app-main">
 
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+        <section class="app-content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row">
                     <div class="col-sm-4">
-                        <h2>{{ get_title(false) }}</h2>
+                        <h3>{{ tag.title().get() }}</h3>
                     </div>
                     <div class="col-sm-8">
-                        <ol class="breadcrumb float-sm-right">
+                        <ol class="breadcrumb float-sm-end">
                             {{ breadcrumbs is not empty ? breadcrumbs : null }}
                         </ol>
                     </div>
@@ -144,7 +136,7 @@
             </div><!-- /.container-fluid -->
         </section>
 
-        <section class="content">
+        <section class="app-content">
             <div class="container-fluid">
                 {{ flash.output() }}
                 {{ flashSession.output() }}
@@ -152,16 +144,16 @@
             </div>
         </section>
         <!-- /.content -->
-    </div>
+    </main>
     <!-- /.content-wrapper -->
 
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>v1.0.2</b>
+    <footer class="app-footer">
+        <div class="float-end d-none d-sm-inline">
+            <b>v2.0.0</b>
         </div>
         <strong>&copy; 2020 - {{ date("Y") }} - Simple Admin. </strong>
     </footer>
 
-</div>
+</main>
 <!-- ./wrapper -->
 </body>

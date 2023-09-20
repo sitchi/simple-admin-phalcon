@@ -6,30 +6,30 @@
         {{ form() }}
         <div class="input-group mb-3">
             {{ form.render('email', ["class":"form-control"]) }}
-            <div class="input-group-append">
+
                 <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
                 </div>
-            </div>
+
         </div>
         <div class="input-group mb-3">
             {{ form.render('password', ["class":"form-control"]) }}
-            <div class="input-group-append">
                 <div class="input-group-text">
                     <span class="fas fa-lock"></span>
                 </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-8">
-                <div class="icheck-primary">
+                <div class="form-check">
                     {{ form.render('remember') }}
                     {{ form.label('remember') }}
                 </div>
             </div>
             <!-- /.col -->
             <div class="col-4">
-                {{ form.render('Login') }}
+                <div class="d-grid gap-2">
+                    {{ form.render('Login') }}
+                </div>
             </div>
             <!-- /.col -->
             {{ form.render('csrf', ['value': security.getToken()]) }}

@@ -21,13 +21,13 @@ class ErrorController extends ControllerBase
 
     public function show404Action()
     {
-        $this->tag->setTitle('Error 404');
+        $this->tag->title()->set('Error 404');
         $this->response->setStatusCode(404, 'Not Found');
     }
 
     public function show500Action()
     {
-        $this->tag->setTitle('Error 500');
+        $this->tag->title()->set('Error 500');
         $this->response->setStatusCode(500, 'Internal Server Error');
     }
 }

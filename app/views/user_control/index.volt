@@ -5,7 +5,7 @@
         <div class="card card-primary card-outline">
             <div class="card-body box-profile">
                 <div class="text-center">
-                    <img class="profile-user-img img-fluid img-circle"
+                    <img class="profile-user-img rounded-circle img-circle"
                          src="{{ gravatar.getAvatar(auth.getEmail()) }}" alt="img">
                 </div>
 

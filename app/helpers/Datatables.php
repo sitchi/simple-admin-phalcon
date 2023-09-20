@@ -10,17 +10,17 @@ class Datatables extends Injectable
 
     public static function css()
     {
-        $css = "<link href='/css/dataTables.bootstrap4.min.css' rel='stylesheet' type='text/css'>";
-        $css .= "<link href='/css/responsive.bootstrap4.min.css' rel='stylesheet' type='text/css'>";
+        $css = "<link href='/css/dataTables.bootstrap5.min.css' rel='stylesheet' type='text/css'>";
+        $css .= "<link href='/css/responsive.bootstrap5.min.css' rel='stylesheet' type='text/css'>";
         return $css;
     }
 
     public static function js()
     {
         $js = "<script src='/js/jquery.dataTables.min.js'></script>";
-        $js .= "<script src='/js/dataTables.bootstrap4.min.js'></script>";
+        $js .= "<script src='/js/dataTables.bootstrap5.min.js'></script>";
         $js .= "<script src='/js/dataTables.responsive.min.js'></script>";
-        $js .= "<script src='/js/responsive.bootstrap4.min.js'></script>";
+        $js .= "<script src='/js/responsive.bootstrap5.min.js'></script>";
         return $js;
     }
 
