@@ -18,22 +18,22 @@ try {
     /**
      * Handle routes
      */
-    include APP_PATH . '/config/router.php';
+    include APP_PATH . '/Config/router.php';
 
     /**
      * Read services
      */
-    include APP_PATH . '/config/services.php';
+    include APP_PATH . '/Config/services.php';
 
     /**
-     * Get config service for use in inline setup below
+     * Get Config service for use in inline setup below
      */
     $config = $di->getConfig();
 
     /**
      * Include Autoloader
      */
-    include APP_PATH . '/config/loader.php';
+    include APP_PATH . '/Config/loader.php';
 
     /**
      * Handle the request
