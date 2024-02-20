@@ -3,25 +3,17 @@ declare(strict_types=1);
 
 namespace PSA\Models;
 
+use Phalcon\Mvc\Model\Transaction\Manager;
 use Phalcon\Mvc\ModelInterface;
 use Phalcon\Mvc\Model\Behavior;
+use PSA\Auth\Auth;
 
 class Blameable extends Behavior
 {
     public function notify(string $eventType, ModelInterface $model)
     {
-        switch ($eventType) {
-            case 'beforeCreate':
-                return $this->auditBeforeCreate($model, $eventType);
-                break;
-            case 'beforeUpdate':
-                return $this->auditBeforeUpdate($model, $eventType);
-                break;
-            case 'beforeDelete':
-                return $this->auditBeforeDelete($model, $eventType);
-                break;
-            default:
-                /* ignore the rest of events */
+        if (method_exists($this, $method = 'audit' . ucfirst($eventType))) {
+            return $this->$method($model);
         }
     }
 
@@ -33,174 +25,78 @@ class Blameable extends Behavior
         }
     }
 
-    public function auditBeforeCreate(ModelInterface $model, $eventType)
+    private function createAudit(ModelInterface $model, $eventType, $changedFields)
+    {
+        $manager = new Manager();
+        $transaction = $manager->get();
+
+        $audit = new Audit();
+        $audit->setTransaction($transaction);
+        $request = $model->getDI()->getRequest();
+
+        $audit->valueID = array_values(get_object_vars($model))[0];
+        $user = new Auth();
+        $audit->userID = $user->getIdentity()->id;
+        $audit->modelName = str_replace('PSA\Models\\', '', get_class($model));
+        $audit->ipAddress = $request->getClientAddress();
+        $audit->action = str_replace('before', '', $eventType);
+        $audit->createdAt = date('Y-m-d H:i:s');
+
+        if (!$audit->save()) {
+            $transaction->rollback();
+            return false;
+        }
+
+        $auditID = $audit->id;
+        $originalData = $model->getSnapshotData();
+
+        foreach ($changedFields as $field) {
+            if ($model->$field != null) {
+                $auditDetail = new AuditDetail();
+                $auditDetail->setTransaction($transaction);
+                $auditDetail->auditID = $auditID;
+                $auditDetail->fieldName = $field;
+                $auditDetail->oldValue = !isset($originalData[$field]) ? null : $originalData[$field];
+                $auditDetail->newValue = $model->$field;
+                if (!$auditDetail->save()) {
+                    $transaction->rollback();
+                    return false;
+                }
+            }
+        }
+        $transaction->commit();
+        return true;
+    }
+
+    public function auditBeforeCreate(ModelInterface $model)
     {
         $metaData = $model->getModelsMetaData();
         $changedFields = $metaData->getAttributes($model);
         $this->deleteElement('createdAt', $changedFields);
         $this->deleteElement('updatedAt', $changedFields);
-        if (count($changedFields)) {
-            //Transactions
-            $manager = new \Phalcon\Mvc\Model\Transaction\Manager();
-            $transaction = $manager->get();
-
-            $audit = new Audit();
-            // Set Transactions
-            $audit->setTransaction($transaction);
-            // Get the request service
-            $request = $model->getDI()->getRequest();
-
-            $audit->valueID = array_values(get_object_vars($model))[0];
-
-            // Get the user id
-            $user = new \PSA\Auth\Auth();
-            $audit->userID = $user->getIdentity()->id;
-
-            // The model who performed the action
-            $audit->modelName = str_replace('PSA\Models\\', '', get_class($model));
-
-            // The client IP address
-            $audit->ipAddress = $request->getClientAddress();
-
-            // Action is an update
-            $audit->action = str_replace('before', '', $eventType);
-
-            // Current datetime
-            $audit->createdAt = date('Y-m-d H:i:s');
-
-            // save audit
-            if (!$audit->save()) {
-                $transaction->rollback();
-                return false;
-                exit;
-            }
-
-            // get audit id
-            $auditID = $audit->id;
-
-            // Get the original data before modification
-            $originalData = $model->getSnapshotData();
-
-            $details = [];
-            foreach ($changedFields as $field) {
-                if ($model->$field != null) {
-                    $auditDetail = new AuditDetail();
-                    // Set Transactions
-                    $auditDetail->setTransaction($transaction);
-                    $auditDetail->auditID = $auditID;
-                    $auditDetail->fieldName = $field;
-                    $auditDetail->oldValue = !isset($originalData[$field]) ? null : $originalData[$field];
-                    $auditDetail->newValue = $model->$field;
-                    if (!$auditDetail->save()) {
-                        $transaction->rollback();
-                        return false;
-                        exit;
-                    }
-                }
-            }
-            $transaction->commit();
-            return true;
-        }
-
-        return null;
+        return count($changedFields) ? $this->createAudit($model, 'beforeCreate', $changedFields) : null;
     }
 
-    public function auditBeforeUpdate(ModelInterface $model, $eventType)
+    public function auditBeforeUpdate(ModelInterface $model)
     {
-        // Get the name of the fields that have changed
         $changedFields = $model->getChangedFields();
         $this->deleteElement('updatedAt', $changedFields);
-        if (count($changedFields)) {
-            //Transactions
-            $manager = new \Phalcon\Mvc\Model\Transaction\Manager();
-            $transaction = $manager->get();
-
-            $audit = new Audit();
-            // Set Transactions
-            $audit->setTransaction($transaction);
-            // Get the request service
-            $request = $model->getDI()->getRequest();
-
-            $audit->valueID = array_values(get_object_vars($model))[0];
-
-            // Get the user id
-            $user = new \PSA\Auth\Auth();
-            $audit->userID = $user->getIdentity()->id;
-
-            // The model who performed the action
-            $audit->modelName = str_replace('PSA\Models\\', '', get_class($model));
-
-            // The client IP address
-            $audit->ipAddress = $request->getClientAddress();
-
-            // Action is an update
-            $audit->action = str_replace('before', '', $eventType);
-
-            // Current datetime
-            $audit->createdAt = date('Y-m-d H:i:s');
-
-            // save audit
-            if (!$audit->save()) {
-                $transaction->rollback();
-                return false;
-                exit;
-            }
-
-            // get audit id
-            $auditID = $audit->id;
-
-            // Get the original data before modification
-            $originalData = $model->getSnapshotData();
-
-            $details = [];
-            foreach ($changedFields as $field) {
-                if ($originalData[$field] != $model->$field) {
-                    $auditDetail = new AuditDetail();
-                    // Set Transactions
-                    $auditDetail->setTransaction($transaction);
-                    $auditDetail->auditID = $auditID;
-                    $auditDetail->fieldName = $field;
-                    $auditDetail->oldValue = $originalData[$field];
-                    $auditDetail->newValue = $model->$field;
-                    if (!$auditDetail->save()) {
-                        $transaction->rollback();
-                        return false;
-                        exit;
-                    }
-                }
-            }
-            $transaction->commit();
-            return true;
-        }
-
-        return null;
+        return count($changedFields) ? $this->createAudit($model, 'beforeUpdate', $changedFields) : null;
     }
 
-    public function auditBeforeDelete(ModelInterface $model, $eventType)
+    public function auditBeforeDelete(ModelInterface $model)
     {
         $audit = new Audit();
-        // Get the request service
         $request = $model->getDI()->getRequest();
 
         $audit->valueID = array_values(get_object_vars($model))[0];
-
-        // Get the user id
-        $user = new \PSA\Auth\Auth();
+        $user = new Auth();
         $audit->userID = $user->getIdentity()->id;
-
-        // The model who performed the action
         $audit->modelName = str_replace('PSA\Models\\', '', get_class($model));
-
-        // The client IP address
         $audit->ipAddress = $request->getClientAddress();
-
-        // Action is an update
-        $audit->action = str_replace('before', '', $eventType);
-
-        // Current datetime
+        $audit->action = str_replace('before', '', 'beforeDelete');
         $audit->createdAt = date('Y-m-d H:i:s');
 
-        // save audit
         return $audit->save();
     }
 }
