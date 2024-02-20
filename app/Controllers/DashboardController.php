@@ -1,20 +1,31 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Namespace for PSA Controllers
+ */
+
 namespace PSA\Controllers;
 
 /**
- * Display the terms and conditions page.
+ * Class DashboardController
+ *
+ * This class extends ControllerBase and is responsible for handling the dashboard page.
  */
 class DashboardController extends ControllerBase
 {
+    /**
+     * This method is called on every request and sets the template before rendering the view.
+     * It sets the template to 'private'.
+     */
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
     }
 
     /**
-     * Default action. Set the public layout (layouts/private.volt)
+     * This method is responsible for handling the index action of the dashboard.
+     * It sets the title of the page.
      */
     public function indexAction()
     {

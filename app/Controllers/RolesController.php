@@ -7,135 +7,124 @@ use Phalcon\Http\Response;
 use Phalcon\Tag;
 use PSA\Forms\RolesForm;
 use PSA\Helpers\Datatables;
-use PSA\Models\Roles;
-use PSA\Models\Permissions;
+use PSA\Services\BreadcrumbService;
+use PSA\Services\Roles\RolesService;
 
-/**
- * RolesController
- * CRUD to manage Roles
- */
 class RolesController extends ControllerBase
 {
+    protected RolesService $rolesService;
+    protected BreadcrumbService $breadcrumbService;
 
-    /**
-     * Default action. Set the private (authenticated) layout (layouts/private.volt)
-     */
-    public function initialize()
+    public function initialize(): void
     {
         $this->view->setTemplateBefore('private');
         $this->tag->title()->set('Roles');
+        $this->rolesService = $this->getDI()->get(RolesService::class);
+        $this->breadcrumbService = $this->getDI()->get(BreadcrumbService::class);
     }
 
-    /**
-     * Default action
-     */
-    public function indexAction()
+    public function indexAction(): void
     {
-        // css and javascript
-        $datatable = new Datatables;
-        $this->view->css = $datatable->css();
-        $js = $datatable->jsData();
-        $js .= "<script type='text/javascript' language='javascript'>
-        function deleteRole(id) {
-            $.post('/roles/delete/' + id, function(data){
-                $('#modal-delete').html(data);
-            })
-        }
-        </script>";
-        $this->view->js = $js;
-        // Breadcrumbs
-        $this->view->breadcrumbs = "
-        <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
-        <li class='breadcrumb-item active'><i class='fas fa-layer-group'></i> Roles</li>
-        ";
-        $roles = Roles::find();
-        $this->view->roles = $roles;
+        $this->view->css = (new Datatables)->css();
+        $this->view->js = (new Datatables)->jsData();
+        $this->assets->addJs('js/roles/index.js');
+
+        $this->view->breadcrumbs = $this->breadcrumbService->generate([
+            ['url' => '/dashboard', 'icon' => 'fas fa-fw fa-tachometer-alt', 'title' => 'Dashboard'],
+            ['url' => '/', 'icon' => 'fas fa-layer-group', 'title' => 'Roles'],
+        ]);
+
+        $this->view->roles = $this->rolesService->getAllRoles();
     }
 
     /**
-     * Creates a new Role
+     * Creates a new role.
+     *
+     * @return \Phalcon\Http\ResponseInterface The response object.
      */
-    public function createAction()
+    public function createAction(): \Phalcon\Http\ResponseInterface
     {
         $form = new RolesForm(null);
         if ($this->request->isPost()) {
-            if ($form->isValid($this->request->getPost()) == false) {
+            if (!$form->isValid($this->request->getPost())) {
                 foreach ($form->getMessages() as $message) {
                     $this->flashSession->error((string)$message);
                 }
                 return $this->response->redirect('/roles/create');
-            } else {
-                $role = new Roles([
-                    'name' => $this->request->getPost('name', 'striptags'),
-                    'active' => $this->request->getPost('active')
-                ]);
-                if ($role->save()) {
-                    $this->flashSession->success("Role was created successfully");
-                }
             }
-            $this->acl->rebuild();
+
+            $postData = [
+                'name' => $this->request->getPost('name', 'striptags'),
+                'active' => $this->request->getPost('active')
+            ];
+
+            if ($this->rolesService->createRole($postData)) {
+                $this->acl->rebuild();
+                $this->flashSession->success("Role was created successfully");
+            } else {
+                $this->flashSession->error("An error has occurred");
+            }
             return $this->response->redirect('/roles');
         }
-        // Breadcrumbs
-        $this->view->breadcrumbs = "
-        <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
-        <li class='breadcrumb-item'><a href='/roles'><i class='fas fa-layer-group'></i> Roles</a></li>
-        <li class='breadcrumb-item active'><i class='fas fa-plus-circle'></i> Create</li>
-        ";
+
+        $this->view->breadcrumbs = $this->breadcrumbService->generate([
+            ['url' => '/dashboard', 'icon' => 'fas fa-fw fa-tachometer-alt', 'title' => 'Dashboard'],
+            ['url' => '/roles', 'icon' => 'fas fa-layer-group', 'title' => 'Roles'],
+        ]);
+
         $this->view->form = $form;
     }
 
     /**
-     * Edits an existing Roles
+     * Edits a role.
      *
-     * @param int $id
+     * @param int $id The ID of the role to edit.
+     * @return \Phalcon\Http\ResponseInterface The response object.
      */
-    public function editAction($id)
+    public function editAction($id): \Phalcon\Http\ResponseInterface
     {
-        $role = Roles::findFirstById($id);
+        $role = $this->rolesService->getRoleById($id);
         if (!$role) {
-            $this->flash->error("Role was not found");
-            return $this->dispatcher->forward([
-                'action' => 'index'
-            ]);
+            $this->flashSession->error("Role was not found");
+            return $this->response->redirect('/roles');
         }
         $form = new RolesForm($role);
         if ($this->request->isPost()) {
-            if ($form->isValid($this->request->getPost()) == false) {
+            if (!$form->isValid($this->request->getPost())) {
                 foreach ($form->getMessages() as $message) {
                     $this->flashSession->error((string)$message);
                 }
             } else {
-                $role->assign([
+                $postData = [
                     'name' => $this->request->getPost('name', 'striptags'),
                     'active' => $this->request->getPost('active')
-                ]);
-                if ($role->save()) {
+                ];
+                if ($this->rolesService->updateRole($role, $postData)) {
                     $this->acl->rebuild();
                     $this->flashSession->success("Role was updated successfully");
                     return $this->response->redirect('/roles');
+                } else {
+                    $this->flashSession->error("An error has occurred");
                 }
             }
             return $this->response->redirect('/roles/edit/' . $id);
         }
         // Breadcrumbs
-        $this->view->breadcrumbs = "
-        <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
-        <li class='breadcrumb-item'><a href='/roles'><i class='fas fa-layer-group'></i> Roles</a></li>
-        <li class='breadcrumb-item active'><i class='fas fa-edit'></i> Edit</li>
-        ";
+        $this->view->breadcrumbs = $this->breadcrumbService->generate([
+            ['url' => '/dashboard', 'icon' => 'fas fa-fw fa-tachometer-alt', 'title' => 'Dashboard'],
+            ['url' => '/roles', 'icon' => 'fas fa-layer-group', 'title' => 'Roles'],
+            ['url' => '/roles/edit/' . $id, 'icon' => 'fas fa-edit', 'title' => 'Edit']
+        ]);
         $this->view->form = $form;
         $this->view->role = $role;
     }
 
     public function editPermissionAction($id)
     {
-        $role = Roles::findFirstById($id);
+        $role = $this->rolesService->getRoleById($id);
         if (!$role) {
-            $this->flash->error("Role was not found");
-            return $this->dispatcher->forward([
-                'action' => 'index'
-            ]);
+            $this->flashSession->error("Role was not found");
+            return $this->response->redirect('/roles');
         }
 
         if ($this->request->isPost()) {
@@ -157,7 +146,7 @@ class RolesController extends ControllerBase
         // Breadcrumbs
         $this->view->breadcrumbs = "
         <li class='breadcrumb-item'><a href='/dashboard'><i class='fas fa-fw fa-tachometer-alt'></i> Dashboard</a></li>
-        <li class='breadcrumb-item'><a href='/roles'><i class='fas fa-layer-group'></i> Roles</a></li>
+        <li class='breadcrumb-item'><a href='/roles'><i class='fas fa-layer-group'></i> roles</a></li>
         <li class='breadcrumb-item active'><i class='fas fa-edit'></i> Edit</li>
         ";
         // Rebuild the ACL with

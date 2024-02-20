@@ -1,6 +1,6 @@
 <?php
 
-namespace PSA\Services;
+namespace PSA\Services\ChangeHistory;
 
 use PSA\Models\AuditDetail;
 
