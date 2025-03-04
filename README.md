@@ -39,7 +39,7 @@ composer install
 After the installation
 
 1. Edit `app/config/config.php` file with your DB connection information
-2. Run DB migrations `vendor/bin/phalcon-migrations run`
+2. Run DB migrations `vendor/bin/phalcon-migrations run --config=app/Config/config.php`
 3. Write permissions of the cache, logs directory `sudo chmod -R 0777 cache/ logs/`
 
 ## License
